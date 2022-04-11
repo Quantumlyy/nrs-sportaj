@@ -24,7 +24,7 @@ import { createUserSession, getUserSession } from "~/services/session.server";
 export const loader: LoaderFunction = async ({ request }) => {
   const userSession = await getUserSession(request);
 
-  if (userSession) return redirect("/notes");
+  if (userSession) return redirect("/");
 
   return json({});
 };
@@ -52,7 +52,7 @@ export const action: ActionFunction = async ({ request }) => {
     );
   }
 
-  const { email, password, redirectTo = "/notes" } = formValidation.data;
+  const { email, password, redirectTo = "/" } = formValidation.data;
 
   const existingUser = await getUserByEmail(email);
 

@@ -27,7 +27,7 @@ const ActionSchema = z.object({
 export const loader: LoaderFunction = async ({ request }) => {
   const userSession = await getUserSession(request);
 
-  if (userSession) return redirect("/notes");
+  if (userSession) return redirect("/");
 
   return json({});
 };
@@ -52,7 +52,7 @@ export const action: ActionFunction = async ({ request }) => {
     );
   }
 
-  const { redirectTo = "/notes", ...userSession } = form.data;
+  const { redirectTo = "/", ...userSession } = form.data;
 
   // user have un account, skip creation part and just commit session
   if (await getUserByEmail(userSession.email)) {
@@ -93,7 +93,7 @@ export default function LoginCallback() {
   const error = useActionData() as ActionData;
   const submit = useSubmit();
   const [searchParams] = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") ?? "/notes";
+  const redirectTo = searchParams.get("redirectTo") ?? "/";
   const supabase = useSupabase();
 
   useEffect(() => {
