@@ -9,16 +9,58 @@ generator client {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
+  id    String @id @default(cuid())
+  email String @unique
+
+  memberships ClubMember[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Club {
+  id   Int    @id @default(autoincrement())
+  slug String @unique
+
+  logo String?
+  header String?
+
+  description String?
+
+  social  ClubSocial?
+  members ClubMember[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ClubMember {
   user   User   @relation(fields: [userId], references: [id])
   userId String
+
+  club   Club @relation(fields: [clubId], references: [id])
+  clubId Int
+
+  permissions Int
+
+  assignedAt DateTime @default(now())
+  assignedBy String
+
+  @@id([userId, clubId])
+}
+
+model ClubSocial {
+  id Int @id @default(autoincrement())
+
+  club   Club @relation(fields: [clubId], references: [id])
+  clubId Int  @unique
+
+  facebook  String?
+  twitter   String?
+  instagram String?
+
+  email       String?
+  phoneNumber String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
